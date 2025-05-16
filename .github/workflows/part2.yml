@@ -20,13 +20,11 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install openmeteo-requests
-          pip install requests-cache retry-requests numpy pandas
           pip install pandas requests-cache retry-requests openmeteo-requests
 
       - name: Run Python script
         run: |
-          python temeperatura.py
+          python calculo_temperaturas.py
 
       - name: Add JSON file to repository
         env:
@@ -34,7 +32,6 @@ jobs:
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          git remote set-url origin https://$GITHUB_TOKEN@github.com/${{ github.repository }}.git
           git add temp_*.json
-          git commit -m "Auto: Añadir fichero JSON con temperaturas"
-          git push origin HEAD:${{ github.ref_name }}
+          git commit -m "Auto: Añadir fichero JSON con temperaturas" || echo "No hay cambios"
+          git push "https://${{ secrets.ACTIONS_TOKEN }}@github.com/${{ github.repository }}.git" HEAD:${{ github.ref_name }}
