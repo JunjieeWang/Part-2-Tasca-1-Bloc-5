@@ -1,8 +1,7 @@
-name: Executar Python i pujar JSON cada 5 minuts
+name: Executar Python i pujar JSON immediatament
 
 on:
-  schedule:
-    - cron: '*/5 * * * *'
+  push:
   workflow_dispatch:
 
 permissions:
