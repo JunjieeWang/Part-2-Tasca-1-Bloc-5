@@ -28,7 +28,7 @@ jobs:
           pip install openmeteo-requests pandas requests requests-cache retry_requests
 
       - name: Executar script Python
-        run: python temeperaturas.py
+        run: python temeperatura.py
 
       - name: Llistar fitxers generats
         run: ls -l temp_*.json || echo "No s'han generat fitxers .json"
