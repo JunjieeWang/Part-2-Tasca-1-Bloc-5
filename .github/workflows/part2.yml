@@ -1,7 +1,8 @@
-name: Executar Python i pujar JSON immediatament
+name: Executar Python i pujar JSON cada dia a les 23:59
 
 on:
-  push:
+  schedule:
+    - cron: "59 23 * * *"  # Cada día a las 23:59
   workflow_dispatch:
 
 permissions:
@@ -12,39 +13,39 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Clonar repositori
+      - name: Clonació del repositori
         uses: actions/checkout@v3
         with:
           persist-credentials: false
 
-      - name: Configurar Python
+      - name: Configuració de Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
 
-      - name: Instal·lar dependències necessàries
+      - name: Instal·lació de les dependències
         run: |
           pip install --upgrade pip
           pip install openmeteo-requests pandas requests requests-cache retry_requests
 
-      - name: Executar script Python
-        run: python temeperatura.py
+      - name: Execució del script de temperatures
+        run: python temeperaturas.py
 
-      - name: Llistar fitxers generats
+      - name: Llistat de fitxers JSON generats
         run: ls -l temp_*.json || echo "No s'han generat fitxers .json"
 
-      - name: Configurar Git per fer commit
+      - name: Configuració de Git
         run: |
           git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config.user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Afegir fitxers .json i fer commit
+      - name: Afegir i commitar fitxers JSON
         run: |
           git add temp_*.json
           git commit -m "Afegit fitxer JSON generat per GitHub Actions [skip ci]" || echo "No hi ha canvis per commitar"
 
-      - name: Configurar remote amb token
+      - name: Configuració del remote per pujar canvis
         run: git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
 
-      - name: Pujar canvis al repositori
+      - name: Pujar els canvis al repositori
         run: git push
