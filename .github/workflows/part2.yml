@@ -1,8 +1,8 @@
 name: Scheduled Temperature Calculation
 
 on:
-  schedule:
-    - cron: "59 23 * * *"
+  push:
+    branches: [ main, develop ]
 
 jobs:
   run-python-script:
@@ -25,3 +25,11 @@ jobs:
       - name: Run Python script
         run: |
           python calculo_temperaturas.py
+
+      - name: Add JSON file to repository
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add temp_*.json
+          git commit -m "Auto: Añadir fichero JSON con temperaturas"
+          git push
