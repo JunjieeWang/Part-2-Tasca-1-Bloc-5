@@ -24,7 +24,7 @@ jobs:
 
       - name: Run Python script
         run: |
-          python temperatura.py
+          python temeperatura.py
 
       - name: Add JSON file to repository
         run: |
