@@ -24,7 +24,7 @@ jobs:
 
       - name: Run Python script
         run: |
-          python calculo_temperaturas.py
+          python temperatura.py
 
       - name: Add JSON file to repository
         run: |
